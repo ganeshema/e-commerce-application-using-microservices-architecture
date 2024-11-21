@@ -1,0 +1,77 @@
+
+services:
+  postgres:  # PostgreSQL database service
+    image: postgres:15  # Official PostgreSQL image (version 15)
+    container_name: postgres_sql  # Custom container name for PostgreSQL
+    ports:
+      - "5431:5431"  # Expose PostgreSQL on port 5432
+    environment:  # Database configuration
+      POSTGRES_USER: root  # Default PostgreSQL user
+      POSTGRES_PASSWORD: mypassword  # Password for the PostgreSQL user
+      PGDATA: /var/lib/postgresql/data  # Location for persistent data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Store database data persistently
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Run an initialization script
+    restart: unless-stopped  # Restart container unless explicitly stopped
+    networks:
+      - microservices-net  # Connect to the shared network
+
+  pgadmin:  # pgAdmin web interface service
+    image: dpage/pgadmin4:latest  # Official pgAdmin 4 image
+    container_name: pgadmin_container  # Custom container name for pgAdmin
+    ports:
+      - "5050:80"  # Expose pgAdmin on port 5050
+    environment:  # pgAdmin configuration
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com  # Login email for pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: admin  # Password for pgAdmin user
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin  # Store pgAdmin data persistently
+    networks:
+      - microservices-net  # Connect to the shared network
+    restart: unless-stopped  # Restart container unless explicitly stopped
+
+  mongodb:  # MongoDB database service
+    image: mongo  # Official MongoDB image
+    container_name: mongo_db  # Custom container name for MongoDB
+    ports:
+      - "27017:27017"  # Expose MongoDB on port 27017
+    environment:  # MongoDB configuration
+      MONGO_INITDB_ROOT_USERNAME: root  # Admin username
+      MONGO_INITDB_ROOT_PASSWORD: mypassword  # Admin password
+    volumes:
+      - mongodb_data:/data/db  # Persistent storage for database data
+    restart: unless-stopped  # Restart container unless explicitly stopped
+    networks:
+      - microservices-net  # Shared network for services
+
+  mongo-express:  # MongoDB web interface service
+    image: mongo-express  # Official Mongo Express image
+    container_name: mongo_express  # Custom container name for Mongo Express
+    ports:
+      - "8081:8081"  # Expose Mongo Express on port 8081
+    environment:  # Mongo Express configuration
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root  # Admin username (matches MongoDB)
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mypassword  # Admin password (matches MongoDB)
+      ME_CONFIG_MONGODB_SERVER: mongodb  # Hostname of MongoDB service
+    restart: always  # Restart container always
+    networks:
+      - microservices-net  # Shared network for services
+
+  mail-dev:  # SMTP service for dev environment
+    image: maildev/maildev  # MailDev image for email testing
+    container_name: mail_dev  # Custom container name for mail service
+    ports:
+      - "1080:1080"  # Expose Web UI port
+      - "1025:1025"  # Expose SMTP port
+    restart: unless-stopped  # Restart container unless explicitly stopped
+    networks:
+      - microservices-net  # Shared network for services
+
+networks:
+  microservices-net:  # Shared bridge network for services
+    driver: bridge
+
+volumes:
+  postgres_data:  # Persistent volume for PostgreSQL data
+  pgadmin_data:  # Persistent volume for pgAdmin data
+  mongodb_data:  # Persistent volume for MongoDB data
