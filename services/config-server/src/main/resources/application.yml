@@ -1,1 +1,21 @@
-spring.application.name=config-server
+spring:
+  profiles:
+    active: native
+  application:
+    name : config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configurations
+          #below properties in case we store in git hub here we are storing in the class path
+#        git:
+#          uri: https://github.com/your-repository/config-repo.git  # URL of the Git repository
+#          username: your-username  # Git repository username (if private)
+#          password: your-password  # Git repository password (if private)
+#          searchPaths:  # (Optional) Subdirectories in the Git repo containing configuration
+#            - config
+#            - shared
+
+server:
+  port: 8888
