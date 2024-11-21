@@ -1,0 +1,11 @@
+eureka:
+  client:
+    register-with-eureka: false  # Discovery server does not register itself
+    fetch-registry: false  # Discovery server does not fetch registry from itself
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}/${server.port}/eureka/
+
+  instance:
+    hostname: localhost
+server:
+  port: 8761
