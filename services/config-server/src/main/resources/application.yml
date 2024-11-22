@@ -1,21 +1,15 @@
+server:
+  port: 8888  # Port on which Config Server will run
+
+
 spring:
   profiles:
-    active: native
+    active: native  # Run Config Server in native mode
   application:
-    name : config-server
+    name: config-server  # The name of your Config Server application
   cloud:
     config:
       server:
         native:
-          search-locations: classpath:/configurations
-          #below properties in case we store in git hub here we are storing in the class path
-#        git:
-#          uri: https://github.com/your-repository/config-repo.git  # URL of the Git repository
-#          username: your-username  # Git repository username (if private)
-#          password: your-password  # Git repository password (if private)
-#          searchPaths:  # (Optional) Subdirectories in the Git repo containing configuration
-#            - config
-#            - shared
+          search-locations: classpath:/configurations  # Where to look for config files
 
-server:
-  port: 8888
