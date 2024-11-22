@@ -1,2 +1,9 @@
-package com.ganeshgc.customerservice.handler;public class ErrorResponse {
+package com.ganeshgc.customerservice.handler;
+
+import java.util.Map;
+
+public record ErrorResponse (
+        Map<String, String> errors
+){
+
 }
