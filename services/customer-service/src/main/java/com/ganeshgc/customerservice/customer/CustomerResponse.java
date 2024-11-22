@@ -1,2 +1,9 @@
-package com.ganeshgc.customerservice.customer;public class CustomerResponse {
-}
+package com.ganeshgc.customerservice.customer;
+
+public record CustomerResponse(
+                               String id,
+                               String firstname,
+                               String lastname,
+                               String email,
+                               Address address
+) {}
