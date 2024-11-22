@@ -1,34 +1,19 @@
 
 services:
   postgres:  # PostgreSQL database service
-    image: postgres:15  # Official PostgreSQL image (version 15)
+    image: postgres  # Official PostgreSQL image (version 15)
     container_name: postgres_sql  # Custom container name for PostgreSQL
     ports:
-      - "5431:5431"  # Expose PostgreSQL on port 5432
+      - "5430:5432"  # Map host port 5430 to container's port 5432
     environment:  # Database configuration
       POSTGRES_USER: root  # Default PostgreSQL user
       POSTGRES_PASSWORD: mypassword  # Password for the PostgreSQL user
       PGDATA: /var/lib/postgresql/data  # Location for persistent data
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Store database data persistently
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Run an initialization script
+      - postgres:/var/lib/postgresql/data  # Store database data persistently
     restart: unless-stopped  # Restart container unless explicitly stopped
     networks:
       - microservices-net  # Connect to the shared network
-
-  pgadmin:  # pgAdmin web interface service
-    image: dpage/pgadmin4:latest  # Official pgAdmin 4 image
-    container_name: pgadmin_container  # Custom container name for pgAdmin
-    ports:
-      - "5050:80"  # Expose pgAdmin on port 5050
-    environment:  # pgAdmin configuration
-      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com  # Login email for pgAdmin
-      PGADMIN_DEFAULT_PASSWORD: admin  # Password for pgAdmin user
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin  # Store pgAdmin data persistently
-    networks:
-      - microservices-net  # Connect to the shared network
-    restart: unless-stopped  # Restart container unless explicitly stopped
 
   mongodb:  # MongoDB database service
     image: mongo  # Official MongoDB image
@@ -72,6 +57,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:  # Persistent volume for PostgreSQL data
-  pgadmin_data:  # Persistent volume for pgAdmin data
+  postgres:  # Persistent volume for PostgreSQL data
   mongodb_data:  # Persistent volume for MongoDB data
