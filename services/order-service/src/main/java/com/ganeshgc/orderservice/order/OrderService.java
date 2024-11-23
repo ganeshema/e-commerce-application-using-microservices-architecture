@@ -6,6 +6,8 @@ import com.ganeshgc.orderservice.kafka.OrderConfirmation;
 import com.ganeshgc.orderservice.kafka.OrderProducer;
 import com.ganeshgc.orderservice.orderLine.OrderLineRequest;
 import com.ganeshgc.orderservice.orderLine.OrderLineService;
+import com.ganeshgc.orderservice.payment.PaymentClient;
+import com.ganeshgc.orderservice.payment.PaymentRequest;
 import com.ganeshgc.orderservice.product.ProductClient;
 import com.ganeshgc.orderservice.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +26,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest request) {
         //check the customer--> (openFein)
@@ -50,7 +53,17 @@ public class OrderService {
 
         }
 
-        //todo start payment process
+        //start payment process
+        var paymentRequest=new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
+
+
 
         // send the confirmation --> notification ms(kafka)
         orderProducer.sendOrderConfirmation(
