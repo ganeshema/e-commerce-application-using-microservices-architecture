@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5430/product_db
+    username: root
+    password: mypassword
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: localhost:9092  # Kafka broker address
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Serializer for keys
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # Serializer for values
+      properties:
+        spring.json.type.mapping: orderConfirmation:com.ganeshgc.orderservice.kafka.OrderConfirmation
+
+    consumer:
+      group-id: my-consumer-group  # Consumer group ID
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for keys
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for values
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    config:
+      customer-url: http://localhost:8090/api/v1/customers
+      product-url: http://localhost:8050/api/v1/products
+      payment-url: http://localhost:8060/api/v1/payments
+
+server:
+  port: 8050
+
