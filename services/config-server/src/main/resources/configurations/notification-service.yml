@@ -1,0 +1,40 @@
+spring:
+  data:
+    mongodb:
+      host: localhost               # MongoDB host (use container name if using Docker)
+      port: 27017                   # MongoDB port
+      database: notification    # MongoDB database name
+      username: root                # MongoDB username
+      password: mypassword          # MongoDB password
+      authentication-database: admin  # Optional, default is "admin"
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092  # Kafka broker address
+      group-id: payment-group, order-group      # Consumer group ID
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'  # Trust all packages (use specific packages for security)
+        spring.json.type.mapping: orderConfirmation:com.ganeshgc.notificationservice.kafka.order.OrderConfirmation,paymentConfirmation:com.ganeshgc.notificationservice.kafka.payment.PaymentConfirmation
+  mail:
+    host: localhost                  # Mail server host
+    port: 1025                       # Mail server port
+    username: ganesh                 # Mail username
+    password: ganesh                 # Mail password
+    properties:
+      mail:
+        smtp:
+          auth: true                 # SMTP authentication
+          starttls:
+            enabled: true      # Enable STARTTLS
+          trust: "*"                 # Trust all hosts
+        connectiontimeout: 5000      # Connection timeout in milliseconds
+        timeout: 3000                # Timeout in milliseconds
+        writetimeout: 5000           # Write timeout in milliseconds
+
+server:
+  port: 8040                         # Notification service port
+
+
+

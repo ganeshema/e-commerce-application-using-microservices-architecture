@@ -9,7 +9,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -35,7 +35,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.existCustomer(customerId));
     }
     @GetMapping("/{customer-id}")
-    public ResponseEntity<CustomerResponse> findCustomerById(@PathVariable @Valid String customerId) {
+    public ResponseEntity<CustomerResponse> findCustomerById(@PathVariable("customer-id") @Valid String customerId) {
         return ResponseEntity.ok(customerService.findById(customerId));
     }
     @DeleteMapping("/{customer-id}")

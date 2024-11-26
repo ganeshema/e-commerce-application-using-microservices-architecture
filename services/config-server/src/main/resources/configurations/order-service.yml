@@ -4,6 +4,7 @@ spring:
     username: root
     password: mypassword
     driver-class-name: org.postgresql.Driver
+
   kafka:
     bootstrap-servers: localhost:9092  # Kafka broker address
     producer:
@@ -12,16 +13,13 @@ spring:
       properties:
         spring.json.type.mapping: orderConfirmation:com.ganeshgc.orderservice.kafka.OrderConfirmation
 
-    consumer:
-      group-id: my-consumer-group  # Consumer group ID
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for keys
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer  # Deserializer for values
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   application:
     config:
       customer-url: http://localhost:8222/api/v1/customers
@@ -29,5 +27,4 @@ spring:
       payment-url: http://localhost:8222/api/v1/payments
 
 server:
-  port: 8050
-
+  port: 8070

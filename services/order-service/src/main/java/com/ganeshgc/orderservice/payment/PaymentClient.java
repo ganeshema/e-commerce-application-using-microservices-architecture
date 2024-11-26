@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(
         name = "payment-service",
-        url = "{application.config.payment-url}"
+        url = "http://localhost:8222/api/v1/payments"
 
 )
 public interface PaymentClient {
+
     @PostMapping
     Integer requestOrderPayment(PaymentRequest paymentRequest);
 }
