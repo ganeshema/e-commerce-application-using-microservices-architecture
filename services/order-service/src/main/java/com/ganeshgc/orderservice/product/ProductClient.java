@@ -20,7 +20,7 @@ import static org.springframework.http.HttpMethod.POST;
 public class ProductClient {
 
 
-    @Value("$(application.config.product-url}")
+    @Value("http://localhost:8222/api/v1/products")
     private String productUrl;
 
     // RestTemplate bean for making REST API calls
